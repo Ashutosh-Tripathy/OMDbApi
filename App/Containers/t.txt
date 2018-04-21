@@ -1,0 +1,3 @@
+        <DropDown items={years} onValueChange={(value) => this.setState({year: value})}  />
+        <DropDown items={['movie', 'series', 'episode']} onValueChange={(value) => this.setState({type: value})}  />
+
