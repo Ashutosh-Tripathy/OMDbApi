@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, Button, ToastAndroid } from 'react-native'
+import { ScrollView, View, Text, TextInput, Button, ToastAndroid } from 'react-native'
 import { connect } from 'react-redux'
 import DropDown from '../Components/DropDown.js'
 import { SearchMovieTypes } from '../Redux/SearchMovieRedux';
@@ -12,12 +12,12 @@ import styles from './Styles/SearchMovieStyle'
 class SearchMovie extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      title: '',
-      year: 0,
-      type: 0,
-      movies: []
-    }
+      this.state = {
+        title: '',
+        year: 0,
+        type: 0,
+        movies: {} 
+      }
     this.pressSearchMovie = this.pressSearchMovie.bind(this);
   }
 
@@ -35,13 +35,18 @@ class SearchMovie extends Component {
     }));
   }
 
+  componentWillMount() {
+  }
   render() {
+    if(this.state.movies.Search ){
+      this.props.navigation.navigate('SearchResult', {movies: this.state.movies });
+    }
     let years = [];
     for (let i = 2018; i >= 1900; i--) {
       years.push(String(i));
     }
     return (
-      <View>
+        <ScrollView>
         <Text>SearchMovie Container</Text>
         <Text>{JSON.stringify(this.state)}</Text>
 
@@ -52,8 +57,8 @@ class SearchMovie extends Component {
         <Text>Movie type: </Text>
         <DropDown itemId={this.state.type} items={['movie', 'series', 'episode']} onValueChange={(value) => this.setState({ type: value })} />
         <Button onPress={this.pressSearchMovie} title='Search movie' />
-      </View>
-    )
+        </ScrollView>
+        )
   }
 }
 
