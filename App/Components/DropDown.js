@@ -17,12 +17,12 @@ export default class DropDown extends Component {
 
   render() {
     return (
-        <View>
-          <Picker selectedValue={this.props.itemId} onValueChange={(itemValue) => this.props.onValueChange(itemValue)}>
-            <Picker.Item label="Please select any value" value="0" />
-            {(this.props.items || []).map(x => <Picker.Item key={x} label={x} value={x} />)}
-          </Picker>
-        </View>
-        )
+      <View>
+        <Picker selectedValue={this.props.itemId} onValueChange={(itemValue) => this.props.onValueChange(itemValue)}>
+          <Picker.Item label="Please select any value" value="0" />
+          {(this.props.items || []).map(x => <Picker.Item key={x} label={x} value={x} />)}
+        </Picker>
+      </View>
+    )
   }
 }

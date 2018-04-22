@@ -2,7 +2,7 @@
 import apisauce from 'apisauce'
 
 // our "constructor"
-const create = (baseURL = 'https://api.github.com/') => {
+const create = (baseURL = 'http://www.omdbapi.com/') => {
   // ------
   // STEP 1
   // ------
@@ -13,9 +13,9 @@ const create = (baseURL = 'https://api.github.com/') => {
     // base URL is read from the "constructor"
     baseURL,
     // here are some default headers
-    headers: {
-      'Cache-Control': 'no-cache'
-    },
+    //headers: {
+    //  'Cache-Control': 'no-cache'
+    //},
     // 10 second timeout...
     timeout: 10000
   })
@@ -36,7 +36,8 @@ const create = (baseURL = 'https://api.github.com/') => {
   //
   const getRoot = () => api.get('')
   const getRate = () => api.get('rate_limit')
-  const getUser = (username) => api.get('search/users', {q: username})
+  const getUser = (username) => api.get('search/users', { q: username })
+  const searchMovie = (title, year, type) => api.get(`?apikey=cc2a4cc&s=${title}` + (type ? `&type=${type}` : '') + (year ? `&year=${year}` : ''))
 
   // ------
   // STEP 3
@@ -54,7 +55,8 @@ const create = (baseURL = 'https://api.github.com/') => {
     // a list of the API functions from step 2
     getRoot,
     getRate,
-    getUser
+    getUser,
+    searchMovie
   }
 }
 
