@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, Button } from 'react-native'
+import { ScrollView, Text, Button, View } from 'react-native'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
@@ -10,26 +10,37 @@ import styles from './Styles/HomeStyle'
 class Home extends Component {
   constructor (props) {
     super(props);
-    this.state = { displayStart: true, questions: {} };
+    this.state = { displayStart: true, questions: {}, score: 0, time: 0, exit: false };
   }
 
+  increaseTime = () => {
+    this.setState({time: this.state.time +1});
+    setTimeout(this.increaseTime, 1000);
+  }
   startQuiz = () => {
-    this.setState({ displayStart: false });
+    this.setState({ displayStart: false, time: 0 });
     this.fetchQuestions();
+    this.increaseTime();
   }
 
   resetQuestion = () =>  {
+    this.setState({time: 0});
     this.fetchQuestions();
+    this.increaseTime();
   }
 
   render () {
-    if (this.state.displayStart) {
+    let {displayStart, questions } = this.state;
+    if (displayStart) {
       return (<Button title="Start Quiz" onPress={this.startQuiz} />)
     } else {
+
       return (
           <ScrollView>
           <Text>Home Container</Text>
-          <Text>{JSON.stringify(this.state)}</Text>
+          {(questions.results || []).map(x =><View><View style={styles.row}><Text>{x.question}</Text></View><View style={styles.rowbtn}><Button title="True"/><Button title="False"/></View></View>)}
+          
+          <Text>{"Time: " + this.state.time}</Text> 
           <Button title="Retry" onPress={this.resetQuestion} />
           </ScrollView>
           )
@@ -40,7 +51,7 @@ class Home extends Component {
       .then((res) => res.json())
       .then((res) => {
         this.setState({
-          questions: res 
+          questions: res
         })
       })
   }
