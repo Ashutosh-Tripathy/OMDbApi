@@ -10,11 +10,16 @@ import styles from './Styles/HomeStyle'
 class Home extends Component {
   constructor (props) {
     super(props);
-    this.state = { displayStart: true };
+    this.state = { displayStart: true, questions: {} };
   }
 
   startQuiz = () => {
     this.setState({ displayStart: false });
+    this.fetchQuestions();
+  }
+
+  resetQuestion = () =>  {
+    this.fetchQuestions();
   }
 
   render () {
@@ -24,9 +29,20 @@ class Home extends Component {
       return (
           <ScrollView>
           <Text>Home Container</Text>
+          <Text>{JSON.stringify(this.state)}</Text>
+          <Button title="Retry" onPress={this.resetQuestion} />
           </ScrollView>
           )
     }
+  }
+  fetchQuestions= () => {
+    fetch('https://opentdb.com/api.php?amount=10&type=boolean')
+      .then((res) => res.json())
+      .then((res) => {
+        this.setState({
+          questions: res 
+        })
+      })
   }
 }
 
